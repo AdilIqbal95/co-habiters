@@ -2,6 +2,8 @@
 
 📝 [![Netlify Status](https://api.netlify.com/api/v1/badges/9d4282f1-2e4a-4d3c-baa0-580d6a1dbbb0/deploy-status)](https://app.netlify.com/sites/condescending-yalow-091244/deploys)  🚀  ![Heroku](https://pyheroku-badge.herokuapp.com/?app=habit-your-way&style=flat)  ⚖️  [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
+https://habite.netlify.app/
+
 A mobile friendly web-app that allows users to register for their own account. They can easily log and record their progress for any habits they wish to track, mark habits as complete for the day, and see their most recent completion streaks. The data is persisted in a Postgres Database connected to Heroku.  
 
 # Description
@@ -49,8 +51,6 @@ To teardown docker compose completely
 5. Server up and running, database seeds and schema created, client skeleton added 
 6. Deploy Client to Netlify and API to Heroku with Heroku Postgres database add-on  
 
-### API
-
 ### Client 
 - Write layout tests
 - Set up file structure, link stylesheets, packages, fonts, and bundle js files 
@@ -58,6 +58,14 @@ To teardown docker compose completely
 - Split up tasks for layout, content, requests, auth, and testing    
 - Connect front end to backend via fetch requests to api and database  
 - Improve test coverage  
+
+### Server 
+- Design database schema
+- Set up MVC file structure
+- Set up RESTful API routes for client to access
+- Format data in a useful manner
+- Add brute force protection with express-rate-limit 
+- Impove test coverage and fix bugs
 
 # Bugs 
 - [x] navHandler is not defined on console
@@ -74,14 +82,15 @@ To teardown docker compose completely
 # Wins & Challenges 
 
 ## Wins 
-- Working great together between front end and back end  
-- Testing! Functions are split up and easy to test  
+- Thorough planning and design phase led to smooth implementation and delivery
+- Working great together between front end and back end 
+- Testing! Functions are split up and easy to test
 
 ## Challenges 
 - Setting up Heroku Postgres - issues with SSL and database credentials
 - Writing a lot of js before bundling 
 - Issues with date formatting  
-- Time!  
+- Time!
 
 # Code Snippet
 <img src="https://user-images.githubusercontent.com/58271566/114206148-f6af8c80-9952-11eb-90ae-eb6cbc47eaf9.png" width="600">
@@ -95,3 +104,6 @@ To teardown docker compose completely
 - Progress sharing
 - Password recovery
 - Dark mode
+
+### Presentation:
+- Slide deck: https://docs.google.com/presentation/d/1zz35L0qkeKtjEddYI5sMxLWUiJK6sENkWtQIbEeJMzM/edit?usp=sharing
