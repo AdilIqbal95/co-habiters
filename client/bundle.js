@@ -54,7 +54,7 @@ function createAddHabitForm() {
         { tag: 'select', attributes:{ id: 'add-habits-dropdown', name: 'habits-dropdown' } },
         { tag: 'input', attributes: { id: 'add-habits-frequency', name: 'frequency', type: 'number', placeholder: 'e.g 3', min: "1", max: "24", required: "true" } },
         { tag: 'label', attributes: { id: 'add-habits-frequency-label', for: 'frequency' }, text: 'times per day' },
-        { tag: 'button', attributes: { class: 'add-habit-btn', type: 'submit', name: 'habit-sbmt'}, text: "Track"}
+        { tag: 'button', attributes: { class: 'add-habit-btn', type: 'submit', name: 'habit-sbmt' }, text: "Track" }
     ];
 
     const form = forms.createForm(fields);
@@ -102,7 +102,7 @@ function createAddHabitForm() {
 function createNewHabitForm() {
     fields = [
         { tag: 'label', attributes: { class: 'new-habit-name', for: 'new-habit-name' }, text: 'Habit name' },
-        { tag: 'input', attributes: { class: 'new-habit-name', name: 'new-habit-name', type: 'text', placeholder: 'e.g noodle farming', required: "true" }, text: 'Add a custom habit' },
+        { tag: 'input', attributes: { class: 'new-habit-name', autocomplete: "off", name: 'new-habit-name', type: 'text', placeholder: 'e.g noodle farming', required: "true" }, text: 'Add a custom habit' },
         { tag: 'button', attributes: { class: 'new-habit-btn', type: 'submit', name: 'new-habit-sbmt' }, text: "Add" }
     ];
 
@@ -126,7 +126,7 @@ function createNewHabitForm() {
         } else {
             inputFeedback(btn, "Exists!", false);
         }
-        
+
     };
 
     return form;
@@ -160,10 +160,10 @@ function createDeleteHabitForm() {
         const selected = userHabitsDropdown.options[userHabitsDropdown.selectedIndex].getAttribute('data-id');
         await req.deleteData(`users/${auth.currentUser()}/habits/${selected}`);
         form.reset();
-        
+
         await refreshForm(document.getElementById("delete-habit-form"));
-        
-       
+
+
     };
 
     return form;
@@ -171,9 +171,9 @@ function createDeleteHabitForm() {
 
 async function refreshForm(container) {
     const formName = container.id;
-  
+
     let newForm;
-    switch(formName) {
+    switch (formName) {
         case "add-habit-form": newForm = await createAddHabitForm(); break;
         case "new-habit-form": newForm = await createNewHabitForm(); break;
         case "delete-habit-form": newForm = await createDeleteHabitForm(); break;
@@ -195,7 +195,7 @@ function inputFeedback(element, text, success) {
     }, 2000)
 }
 
-module.exports = { 
+module.exports = {
     renderAddHabitsPage,
     createAddHabitForm,
     createDeleteHabitForm,
@@ -203,7 +203,7 @@ module.exports = {
 };
 },{"./auth":2,"./forms":4,"./requests":9}],2:[function(require,module,exports){
 const jwt_decode = require('jwt-decode')
-const apiUrl = 'https://debug3213123.herokuapp.com' // http://localhost:3000
+const apiUrl = 'https://habit-your-way.herokuapp.com' // http://localhost:3000
 
 async function requestLogin(e){
     try {
@@ -314,14 +314,14 @@ function render404() {
 
 module.exports = { renderProfile, renderLandingPage, render404 }
 },{"./auth":2,"./forms":4,"./profile":7,"./renderHelpers":8,"./requests":9}],4:[function(require,module,exports){
-const auth = require("./auth");
+  const auth = require("./auth");
 const main = document.querySelector('main');
 
 function renderLoginForm() {
     // Define form fields
     const authFields = [
         { tag: 'label', attributes: { id: 'username-label', for: 'username' }, text: 'Username' },
-        { tag: 'input', attributes: { id: 'username', name: 'username', placeholder: 'Enter your username', required: true } },
+        { tag: 'input', attributes: { id: 'username', name: 'username', autocomplete: "off", placeholder: 'Enter your username', required: true } },
         { tag: 'label', attributes: { id: 'password-label', for: 'password' }, text: 'Password' },
         { tag: 'input', attributes: { id: 'password', type: 'password', name: 'password', placeholder: 'Enter your password', required: true } },
         { tag: 'label', attributes: { id: 'robot-label', for: 'robot-check' }, text: 'Not a robot, (bzzt, dzzt).' },
@@ -350,7 +350,7 @@ function renderLoginForm() {
 function renderRegisterForm() {
     const authFields = [
         { tag: 'label', attributes: { id: 'username-label', for: 'username' }, text: 'Username' },
-        { tag: 'input', attributes: { id: 'username', name: 'username', placeholder: 'Enter your username', required: true } },
+        { tag: 'input', attributes: { id: 'username', name: 'username', autocomplete: "off", placeholder: 'Enter your username', required: true } },
         { tag: 'label', attributes: { id: 'password-label', for: 'password' }, text: 'Password' },
         { tag: 'input', attributes: { id: 'password', type: 'password', name: 'password', placeholder: 'Enter your password', required: true } },
         { tag: 'input', attributes: { id: 'password-check', type: 'password', name: 'password', placeholder: 'Confirm password', required: true } },
@@ -526,13 +526,17 @@ function updateMain(path) {
                 forms.renderLoginLink();
                 break;
             case '#profile':
-                rHelpers.renderHeading();
-                content.renderProfile(); break;
+                rHelpers.renderHeading("small");
+                content.renderProfile(); 
+                break;
+
             case '#addhabits':
-                rHelpers.renderHeading()
+                rHelpers.renderHeading("small")
                 addHabits.renderAddHabitsPage();
+               
                 break;
             case '#logout':
+                rHelpers.renderHeading()
                 auth.logout(); hideFooter(); break;
             default:
                 content.render404(); break;
@@ -565,7 +569,6 @@ const forms = require('./forms');
 const requests = require('./requests')
 const auth = require('./auth')
 
-const username = auth.currentUser();
 const nav = document.querySelector('nav');
 const heading = document.querySelector('header');
 const main = document.querySelector('main');
@@ -574,11 +577,12 @@ async function streaksHelper() {
     const showFooter = document.getElementById('footer')
     showFooter.style.display = 'block';
     const greeting = document.createElement('h1')
-    greeting.textContent = `Hi there, ${localStorage.getItem('username')}! 👋🏼`;
+    greeting.textContent = `Hi there, ${auth.currentUser()}! 👋🏼`;
     heading.appendChild(greeting);
 
-    const userData = await requests.getData(`users/${username}/habits/entries`);
+    const userData = await requests.getData(`users/${auth.currentUser()}/habits/entries`);
     if (requests.getData.err) { return }
+    console.log(userData)
     const streaks = document.createElement('div')
     streaks.className = "streaks-list"
     const streaksHeading = document.createElement('h2')
@@ -627,7 +631,7 @@ async function streaksHelper() {
         let message;
 
         if (currentStreakTotal === 0) {
-            message = "Crumbs ... let's get back in the habite!";
+            message = "Crumbs ... let's get back in the habit!";
         } else if (currentStreakTotal > 0 && currentStreakTotal <= 2) {
             message = "Great start!  Keep at it!";
         } else if (currentStreakTotal > 2 && currentStreakTotal <= 7) {
@@ -635,13 +639,13 @@ async function streaksHelper() {
         } else if (currentStreakTotal > 7 && currentStreakTotal <= 14) {
             message = "More than a week effort!";
         } else if (currentStreakTotal > 14) {
-            message = "Rehabite-ation not required here!";
+            message = "Rehabit-ation not required here!";
         } else {
-            message = "Whoops.  No streakers here!";
+            message = "Whoops. No streakers here!";
         }
 
         let currentStreakMessage = document.createElement('p');
-        currentStreakMessage.textContent = `${currentStreakTotal} ${dayNumber}, ${message}`;
+        currentStreakMessage.textContent = `${currentStreakTotal} ${dayNumber} ${message}`;
         streakContainer.appendChild(currentStreakMessage);
 
         let topStreak = streaks.streakData.top_streak;
@@ -654,7 +658,7 @@ async function streaksHelper() {
 }
 
 async function habitsHelper() {
-    const habitsList = await requests.getData(`users/${username}/habits/entries`);
+    const habitsList = await requests.getData(`users/${auth.currentUser()}/habits/entries`);
     if (habitsList.err) { return }
     const habits = document.createElement('div')
     habits.className = "habits-list"
@@ -705,7 +709,7 @@ async function habitsHelper() {
             } else { currentHabitTotal++ }
             try {
                 const data = { user_habit_id: currentHabitID, completed: true }
-                requests.postData(`users/${username}/habits/entries`, data);
+                requests.postData(`users/${auth.currentUser()}/habits/entries`, data);
                 updateProgressBar()
             } catch (err) {
                 throw err
@@ -718,7 +722,7 @@ async function habitsHelper() {
             if (currentHabitTotal === 0) {
             } else { currentHabitTotal-- }
             try {
-                requests.deleteData(`users/${username}/habits/entries/${currentHabitID}`);
+                requests.deleteData(`users/${auth.currentUser()}/habits/entries/${currentHabitID}`);
                 updateProgressBar()
             } catch (err) {
                 throw err
@@ -852,7 +856,7 @@ module.exports = {
     renderHeading
 }
 },{}],9:[function(require,module,exports){
-const apiUrl = 'https://debug3213123.herokuapp.com' // http://localhost:3000
+const apiUrl = 'https://habit-your-way.herokuapp.com' // http://localhost:3000
 
 async function getData(path) {
     try {
